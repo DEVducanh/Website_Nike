@@ -22,55 +22,48 @@ class CartController
 
 
     public function cartAdd($productId)
-    {
-        try {
+{
+    try {
+        // Lấy thông tin sản phẩm
+        $product = $this->product->showOne($productId);
 
-
-
-            // Lấy thông tin sản phẩm
-            $product = $this->product->showOne($productId);
-
-
-
-            // Lưu sản phẩm vào session
-            $_SESSION['cart'][$productId] = array_merge($product, ['quantity' => 1]);
-
-            // Tiến hành giao dịch với database
-            $pdo = $this->cart->getPdo();
-            // $pdo->beginTransaction();
-
-            $cart = $this->cart->showOneCart('carts', ['user_id' => $_SESSION['user']['id']]);
-
-            if (empty($cart)) {
-                $cartId = $this->cart->insert_get_last_id('carts', ['user_id' => $_SESSION['user']['id']]);
-            } else {
-                $cartId = $cart['id'];
-            }
-            // Thêm vào bảng carts
-
-            $_SESSION['cart_Id'] = $cartId;
-
-            // Thêm vào bảng cart_items
-
-            $this->cart_item->insertc('cart_items', [
-                'cart_id' => $cartId,
-                'product_id' => $productId,
-                'quantity' => 1,
-            ]);
-
-
-
-            // $pdo->commit();
-        } catch (Exception $e) {
-            // Rollback nếu có lỗi
-            if (isset($pdo)) {
-                // $pdo->rollBack();
-            }
-            error_log($e->getMessage());
-            die("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
+        // Lấy size từ request
+        $size = $_POST['size'] ?? null; // Lấy size từ POST (được gửi từ form)
+        if (!$size) {
+            throw new Exception("Size is required.");
         }
-        header('Location:' . BASE_URL . '?action=cart-List');
+
+        // Lưu sản phẩm vào session
+        $_SESSION['cart'][$productId] = array_merge($product, ['quantity' => 1, 'size' => $size]);
+
+        // Tiến hành giao dịch với database
+        $pdo = $this->cart->getPdo();
+
+        $cart = $this->cart->showOneCart('carts', ['user_id' => $_SESSION['user']['id']]);
+
+        if (empty($cart)) {
+            $cartId = $this->cart->insert_get_last_id('carts', ['user_id' => $_SESSION['user']['id']]);
+        } else {
+            $cartId = $cart['id'];
+        }
+
+        $_SESSION['cart_Id'] = $cartId;
+
+        // Thêm vào bảng cart_items (có thêm size)
+        $this->cart_item->insertc('cart_items', [
+            'cart_id' => $cartId,
+            'product_id' => $productId,
+            'size' => $size, // Lưu size
+            'quantity' => 1,
+        ]);
+
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        die("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
     }
+    header('Location:' . BASE_URL . '?action=cart-List');
+}
+
 
 
     public function cartList()

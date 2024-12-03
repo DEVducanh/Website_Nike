@@ -37,23 +37,24 @@ class Cart_items extends BaseModel
             if (empty($data)) {
                 throw new Exception("No data provided for insertion.");
             }
-
+    
             $strKeys = $this->get_str_keys($data);
             $virtualParams = $this->get_virtual_params($data);
-
+    
             $sql = "INSERT INTO $tableName ($strKeys) VALUES ($virtualParams)";
             $stmt = $this->pdo->prepare($sql);
-
+    
             foreach ($data as $fieldName => $value) {
                 $stmt->bindValue(":$fieldName", $value);
             }
-
+    
             $stmt->execute();
         } catch (\Exception $e) {
-            
+            error_log($e->getMessage());
             return false;
         }
     }
+    
     
 
     public function insert_get_last_id($tableName, $data = []) {

@@ -69,6 +69,76 @@ if (isset($_SESSION['login_sucsess'])) {
 #category option {
     padding: 5px;
 }
+.sizes {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.sizes label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 40px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.sizes label.visited {
+    border-color: #007bff;
+    background-color: #e7f3ff;
+}
+
+.sizes label span {
+    pointer-events: none;
+}
+
+.sizes input[type="radio"] {
+    display: none;
+}
+
+.sizes input[type="radio"]:checked + span {
+    border: 2px solid #333;
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.sizes label:hover {
+    border-color: #999;
+    background-color: #f7f7f7;
+}
+
+.add-to-bag {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-bag:hover {
+    background-color: #0056b3;
+}
 </style>
 <body>
 <div class="container">
@@ -170,6 +240,26 @@ if (isset($_SESSION['login_sucsess'])) {
     $(document).ready(function() {
         loadSlider(); 
     });
+document.querySelectorAll('.sizes input[type="radio"]').forEach((input) => {
+    input.addEventListener('change', function () {
+        // Thêm class 'visited' cho tất cả các nhãn
+        document.querySelectorAll('.sizes label').forEach((label) => {
+            label.classList.remove('visited');
+        });
+
+        // Tìm label liên kết với input đã chọn và thêm class 'visited'
+        if (this.checked) {
+            this.parentElement.classList.add('visited');
+        }
+    });
+});
+
+
+
+
+
+
+    
 </script>
 </body>
 
