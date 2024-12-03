@@ -30,24 +30,46 @@
                     <li>Màu sắc:    <?= $product['h_color'] ?> </li>
                 </ul>
             </div>
-        
             <div class="size-selection">
-                <h3>Chọn Kích Cỡ</h3>
-                <div class="sizes">
-                    <!-- Giả sử kích cỡ được hiển thị động -->
-                    <span>35</span>
-                    <span>39</span>
-                    <span>40</span>
-                    <span>41</span>
-                    <span>42</span>
-                    <span>43</span>
-           
-                </div>
-            </div>
-            
-            <a href="index.php?action=cart-add&productId=<?=$product['h_id']?>"><button class="add-to-bag">Thêm Vào Túi</button></a>
-            <button class="wishlist">Yêu Thích &#9825;</button>
+            <h3 class="section-title">Chọn Kích Cỡ</h3>
+<form action="index.php?action=cart-add&productId=<?= $product['h_id'] ?>" method="POST">
+    <div class="sizes">
+        <!-- Hiển thị kích cỡ động -->
+        <label>
+            <input type="radio" name="size" value="40.5" required>
+            <span>40.5</span>
+        </label>
+        <label>
+            <input type="radio" name="size" value="41">
+            <span>41</span>
+        </label>
+        <label>
+            <input type="radio" name="size" value="42">
+            <span>42</span>
+        </label>
+        <label>
+            <input type="radio" name="size" value="42.5">
+            <span>42.5</span>
+        </label>
+        <label>
+            <input type="radio" name="size" value="43">
+            <span>43</span>
+        </label>
+        <label>
+            <input type="radio" name="size" value="44">
+            <span>44</span>
+        </label>
+    </div>
+    
 
+    <a style="text-decoration: none;" href="index.php?action=cart-add&productId=<?=$product['h_id']?>">   <button type="submit" class="add-to-bag">Thêm Vào Túi</button></a>
+</form>
+
+
+            
+       
+            <button class="wishlist">Yêu Thích &#9825;</button>
+         
             <div class="product-description">
                 <p><?= $product['h_description'] ?></p>
                 <ul>
